@@ -6,7 +6,11 @@ const jsdom = require('jsdom');  // Necesitamos jsdom para procesar el HTML y ex
 const { JSDOM } = jsdom;
 const app = express();
 
-app.use(bodyParser.json());
+
+// Aumenta el límite de tamaño del cuerpo de las solicitudes
+//app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Ruta para generar el archivo XLSX
 app.post('/generateXLSX', (req, res) => {
@@ -43,6 +47,13 @@ app.post('/generateXLSX', (req, res) => {
 });
 
 // Escuchar en el puerto 3000
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+/*
 app.listen(3000, () => {
     console.log('Servicio de generación de XLSX escuchando en el puerto 3000');
 });
+*/
